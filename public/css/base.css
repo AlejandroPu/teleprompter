@@ -1,0 +1,41 @@
+
+/* === BASE === */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+	--bg: #080808;
+	--text-color: #f0e6c8;
+	--highlight: #f5c030;
+	--highlight-bg: rgba(245, 192, 48, 0.18);
+	--passed: #5a5040;
+	--panel-bg: rgba(15, 15, 15, 0.95);
+	--panel-border: #2a2520;
+	--accent: #f5c030;
+	--btn-bg: #1a1710;
+	--btn-hover: #2a2418;
+	--red: #e05050;
+	--green: #50c878;
+	--font-size: 48px;
+	--text-width: 75%;
+}
+
+html, body {
+	height: 100%;
+	background: var(--bg);
+	color: var(--text-color);
+	font-family: 'JetBrains Mono', monospace;
+	overflow: hidden;
+}
+
+/* === SHARED BETWEEN SETUP AND PROMPTER === */
+
+input[type="range"] {
+	flex: 1;
+	-webkit-appearance: none;
+	height: 2px;
+	background: #2a2418;
+	border-radius: 2px;
+	outline: none;
+	cursor: pointer;
+}
