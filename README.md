@@ -31,26 +31,27 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
-This is the initial release. The next step is to refactor the codebase by separating CSS and JavaScript into individual files, working toward the following structure:
-
 ```
 teleprompter/
 ├── public/
 │   ├── index.html
-│   ├── css/
-│   │   └── styles.css
-│   ├── js/
-│   │   ├── main.js
-│   │   └── prompter.js
 │   ├── whisper-worker.js
-│   └── screenshot.png
+│   ├── screenshot.png
+│   ├── css/
+│   │   ├── base.css		# CSS variables, reset, shared styles
+│   │   ├── setup.css		# Setup screen styles
+│   │   └── prompter.css	# Prompter screen styles
+│   └── js/
+│       ├── main.js			# UI event listeners
+│       └── prompter.js		# Engine: state, audio, Whisper, scroll
 ├── server.js
 ├── package.json
 ├── package-lock.json
 ├── .gitignore
-└── README.md
+├── README.md
+└── LICENCE
 ```
 
 ## Built With
 
-Developed in pair programming with [Claude](https://claude.ai) (Anthropic).
+Developed in pair programming with [Claude Sonnet 4.6](https://claude.ai) (Anthropic).
