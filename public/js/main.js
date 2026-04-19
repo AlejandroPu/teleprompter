@@ -43,7 +43,8 @@ document.getElementById('startBtn').addEventListener('click', async () => {
 	document.getElementById('setup').style.display          = 'none';
 	document.getElementById('loadingOverlay').style.display = 'flex';
 
-	await initWorker();
+	const language = document.getElementById('languageSelect').value;
+	await initWorker(language);
 });
 
 // ─────────────────────────────────────────────

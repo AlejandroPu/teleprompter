@@ -14,14 +14,22 @@ let mediaRecorder    = null;
 let audioChunks      = [];
 let workerReady      = false;
 let processingAudio  = false;
+let currentLanguage  = 'english';
+let audioTail        = null;   // tail of previous chunk, prefixed to next chunk for continuity
 
 const CHUNK_MS       = 2000;   // record a chunk every CHUNK_MS seconds
+const SAMPLE_RATE    = 16000;
+const OVERLAP_MS     = 1000;   // tail of previous chunk replayed at the start of the next
+const OVERLAP_SAMPLES = (SAMPLE_RATE * OVERLAP_MS) / 1000;
 
 // ─────────────────────────────────────────────
 //  BUILD WORD SPANS
 // ─────────────────────────────────────────────
 function cleanWord(w) {
-	return w.toLowerCase().replace(/[^a-z0-9']/gi, '');
+	return w.toLowerCase()
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.replace(/[^\p{L}\p{N}']/gu, '');
 }
 
 /**
@@ -33,6 +41,9 @@ function buildPrompter(text) {
 	const container = document.getElementById('promptText');
 	container.innerHTML = '';
 	words = [];
+	currentIdx = 0;
+	const scrollContainer = document.getElementById('scrollContainer');
+	if (scrollContainer) scrollContainer.scrollTop = 0;
 
 	text.split(/(\s+)/).forEach(token => {
 		if (/^\s+$/.test(token)) {
@@ -92,7 +103,7 @@ function updateHighlight(idx) {
 function findBestMatch(spokenWords) {
 	if (!spokenWords.length) return -1;
 
-	const SEARCH_WINDOW = 20;
+	const SEARCH_WINDOW = 15;
 	const MATCH_CHAIN   = 6;
 	const cleanSpoken   = spokenWords.map(cleanWord);
 	const lastN         = cleanSpoken.slice(-MATCH_CHAIN);
@@ -127,7 +138,8 @@ function handleTranscript(text) {
 // ─────────────────────────────────────────────
 //  WHISPER WORKER
 // ─────────────────────────────────────────────
-async function initWorker() {
+async function initWorker(language = 'english') {
+	currentLanguage = language;
 	worker = new Worker('/whisper-worker.js', { type: 'module' });
 
 	worker.onmessage = async ({ data }) => {
@@ -188,8 +200,21 @@ function beginRecording() {
 		try {
 			const decoded  = await audioContext.decodeAudioData(arrayBuffer);
 			const float32  = decoded.getChannelData(0);
+
+			let payload;
+			if (audioTail && audioTail.length) {
+				payload = new Float32Array(audioTail.length + float32.length);
+				payload.set(audioTail, 0);
+				payload.set(float32, audioTail.length);
+			} else {
+				payload = new Float32Array(float32);
+			}
+
+			const tailSize = Math.min(OVERLAP_SAMPLES, float32.length);
+			audioTail = float32.slice(float32.length - tailSize);
+
 			processingAudio = true;
-			worker.postMessage({ type: 'transcribe', audio: float32 }, [float32.buffer]);
+			worker.postMessage({ type: 'transcribe', audio: payload, language: currentLanguage }, [payload.buffer]);
 		} catch (e) {
 			console.warn('Audio decode error:', e);
 		}
@@ -236,8 +261,13 @@ function resetPrompter() {
 
 function exitPrompter() {
 	stopMic();
-	if (mediaStream) { mediaStream.getTracks().forEach(t => t.stop()); mediaStream = null; }
-	if (worker)      { worker.terminate(); worker = null; workerReady = false; }
+	if (mediaStream)  { mediaStream.getTracks().forEach(t => t.stop()); mediaStream = null; }
+	if (worker)       { worker.terminate(); worker = null; workerReady = false; }
+	if (audioContext) { audioContext.close().catch(() => {}); audioContext = null; }
+	mediaRecorder   = null;
+	audioChunks     = [];
+	processingAudio = false;
+	audioTail       = null;
 	document.getElementById('prompter').style.display = 'none';
 	document.getElementById('setup').style.display    = 'flex';
 	currentIdx = 0;

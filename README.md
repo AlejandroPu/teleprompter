@@ -9,7 +9,8 @@ A voice-driven teleprompter that highlights text in real time using on-device sp
 - Real-time speech-to-text with Whisper (runs entirely in the browser)
 - Auto-scroll synchronized to your voice
 - Adjustable font size, text width, line height and scroll speed
-- English-only transcription (uses `Xenova/whisper-tiny.en`)
+- Multilingual transcription — English, Spanish, French, German, Italian, Portuguese, Dutch, Russian, Chinese, Japanese, Korean, Arabic (uses `Xenova/whisper-tiny`)
+- Language selector in the setup screen
 - Works offline after the first model download
 
 ## Tech Stack
@@ -54,4 +55,5 @@ teleprompter/
 
 ## Built With
 
-Developed in pair programming with [Claude Sonnet 4.6](https://claude.ai) (Anthropic).
+- Versions up to **2.0.0** — developed in pair programming with [Claude Sonnet 4.6](https://claude.ai) (Anthropic) via the Claude web app.
+- From version **2.1.0** onward — developed with [Claude Code](https://claude.com/claude-code) (Anthropic).

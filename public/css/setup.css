@@ -88,6 +88,22 @@ input[type="range"]::-webkit-slider-thumb {
 	text-align: right;
 }
 
+.lang-select {
+	flex: 1;
+	background: #0e0e0e;
+	border: 1px solid var(--panel-border);
+	border-radius: 6px;
+	color: var(--text-color);
+	font-family: 'Lora', serif;
+	font-size: 0.9rem;
+	padding: 8px 12px;
+	outline: none;
+	cursor: pointer;
+	transition: border-color 0.2s;
+}
+
+.lang-select:focus { border-color: #4a3e28; }
+
 #startBtn {
 	width: min(700px, 100%);
 	padding: 16px;

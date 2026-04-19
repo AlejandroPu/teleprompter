@@ -5,6 +5,31 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.1.0] - 2026-04-19
+
+### Added
+- Multilingual transcription via the multilingual `Xenova/whisper-tiny` model
+- Language selector in the setup screen (12 languages: English, Spanish,
+  French, German, Italian, Portuguese, Dutch, Russian, Chinese, Japanese,
+  Korean, Arabic)
+- 1-second audio overlap between chunks: the tail of the previous chunk is
+  prefixed to the next one so Whisper never sees a raw cut at word boundaries
+
+### Changed
+- `cleanWord` now normalizes diacritics (NFD) and accepts any Unicode letter,
+  so matching works for accented characters (café, niño, etc.)
+- `initWorker(language)` and the `transcribe` worker message now carry the
+  selected language, which is forwarded to the Whisper pipeline
+
+### Fixed
+- Starting a new session (after exit) kept scroll position and `currentIdx`
+  from the previous session; `buildPrompter` now resets both
+- `exitPrompter` leaked `AudioContext` instances and left `processingAudio`,
+  `mediaRecorder`, `audioChunks` in a stale state, which could break the
+  next session
+
+---
+
 ## [2.0.1] - 2026-04-19
 
 ### Fixed
