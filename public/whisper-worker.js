@@ -4,7 +4,7 @@ let transcriber = null;
 
 async function loadModel() {
 	self.postMessage({ type: 'status', text: 'Loading Whisper model...' });
-	transcriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny');
+	transcriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-base');
 	self.postMessage({ type: 'ready' });
 }
 

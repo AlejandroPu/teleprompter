@@ -5,6 +5,36 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.2.0] - 2026-04-19
+
+### Added
+- Microphone selector in the setup screen: picks from the system's audio
+  input devices, with an "Unlock names" button that requests permission to
+  reveal labels when they are hidden by the browser
+- Live microphone level meter (RMS) that activates once permission is
+  granted and updates when the selected device changes
+- Microphone gain control (0 %–500 %) with a slider in the setup screen and
+  a matching slider in the prompter panel for live adjustment during a
+  reading session
+- Accessibility passes: `aria-label` on icon-only buttons (mic, reset,
+  exit), `aria-label` on the panel sliders, `aria-hidden` on purely
+  decorative elements, `role="toolbar"` on the panel, `role="status"` on
+  the mic status dot, `aria-keyshortcuts` on controls with keyboard
+  bindings, `<label for>` associations in the setup controls, and a
+  `<html lang>` attribute that follows the selected language (BCP 47)
+
+### Changed
+- Upgraded transcription model from `Xenova/whisper-tiny` to
+  `Xenova/whisper-base` for noticeably better accuracy, especially with
+  lower-quality microphones and accented speech (~150 MB download on
+  first launch, cached afterwards)
+- `#hideHint` is now a `<button>` (keyboard-focusable) instead of a `<div>`
+- `startMic` routes audio through a `GainNode` and
+  `MediaStreamDestination`, so the stream fed to `MediaRecorder` carries
+  the configured gain
+
+---
+
 ## [2.1.0] - 2026-04-19
 
 ### Added

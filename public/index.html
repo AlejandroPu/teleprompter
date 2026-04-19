@@ -29,7 +29,23 @@
 
 	<div class="setup-controls">
 		<div class="slider-row">
-			<label>Language</label>
+			<label for="micSelect">Microphone</label>
+			<select id="micSelect" class="lang-select"></select>
+			<button type="button" id="micUnlockBtn" class="inline-btn" title="Grant microphone permission to reveal device names">Unlock names</button>
+		</div>
+		<div class="slider-row mic-meter-row" id="micMeterRow" hidden>
+			<label aria-hidden="true">Level</label>
+			<div class="mic-meter" role="meter" aria-label="Microphone input level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+				<div class="mic-meter-fill" id="micMeterFill"></div>
+			</div>
+		</div>
+		<div class="slider-row">
+			<label for="gainSlider">Mic gain</label>
+			<input type="range" id="gainSlider" min="0" max="500" value="100">
+			<span class="slider-val" id="gainVal" aria-hidden="true">100%</span>
+		</div>
+		<div class="slider-row">
+			<label for="languageSelect">Language</label>
 			<select id="languageSelect" class="lang-select">
 				<option value="english">English</option>
 				<option value="spanish">Español</option>
@@ -46,14 +62,14 @@
 			</select>
 		</div>
 		<div class="slider-row">
-			<label>Font size</label>
+			<label for="fontSizeSlider">Font size</label>
 			<input type="range" id="fontSizeSlider" min="24" max="96" value="30">
-			<span class="slider-val" id="fontSizeVal">30px</span>
+			<span class="slider-val" id="fontSizeVal" aria-hidden="true">30px</span>
 		</div>
 		<div class="slider-row">
-			<label>Text width</label>
+			<label for="widthSlider">Text width</label>
 			<input type="range" id="widthSlider" min="15" max="100" value="16">
-			<span class="slider-val" id="widthVal">16%</span>
+			<span class="slider-val" id="widthVal" aria-hidden="true">16%</span>
 		</div>
 	</div>
 
@@ -78,25 +94,29 @@
 		</div>
 	</div>
 
-	<div id="panel">
-		<div id="statusDot"></div>
-		<button class="panel-btn" id="micBtn">🎙</button>
-		<div class="divider"></div>
+	<div id="panel" role="toolbar" aria-label="Teleprompter controls">
+		<div id="statusDot" role="status" aria-label="Microphone status"></div>
+		<button class="panel-btn" id="micBtn" aria-label="Start or pause microphone" aria-keyshortcuts="Space">🎙</button>
+		<div class="divider" aria-hidden="true"></div>
 		<div class="panel-slider-wrap">
-			<span class="panel-label">Aa</span>
-			<input type="range" class="panel-range" id="panelFontSlider" min="24" max="96" value="30">
+			<span class="panel-label" aria-hidden="true">Aa</span>
+			<input type="range" class="panel-range" id="panelFontSlider" min="24" max="96" value="30" aria-label="Font size">
 		</div>
 		<div class="panel-slider-wrap">
-			<span class="panel-label">↔</span>
-			<input type="range" class="panel-range" id="panelWidthSlider" min="15" max="100" value="16">
+			<span class="panel-label" aria-hidden="true">↔</span>
+			<input type="range" class="panel-range" id="panelWidthSlider" min="15" max="100" value="16" aria-label="Text width">
 		</div>
-		<div class="divider"></div>
-		<button class="panel-btn" id="resetBtn">↺</button>
-		<button class="panel-btn" id="exitBtn">✕</button>
+		<div class="panel-slider-wrap">
+			<span class="panel-label" aria-hidden="true">🎚</span>
+			<input type="range" class="panel-range" id="panelGainSlider" min="0" max="500" value="100" aria-label="Microphone gain">
+		</div>
+		<div class="divider" aria-hidden="true"></div>
+		<button class="panel-btn" id="resetBtn" aria-label="Reset to beginning">↺</button>
+		<button class="panel-btn" id="exitBtn" aria-label="Exit teleprompter">✕</button>
 	</div>
 
-	<div id="hideHint">Hide panel [H]</div>
-	<div id="transcript"></div>
+	<button id="hideHint" aria-keyshortcuts="H">Hide panel [H]</button>
+	<div id="transcript" aria-hidden="true"></div>
 </div>
 
 <script type="module" src="js/main.js"></script>

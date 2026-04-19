@@ -15,6 +15,10 @@ let audioChunks      = [];
 let workerReady      = false;
 let processingAudio  = false;
 let currentLanguage  = 'english';
+let currentDeviceId  = null;   // selected microphone deviceId (null = system default)
+let currentGain      = 1.0;    // microphone gain multiplier
+let gainNode         = null;   // live-adjustable GainNode in the recording graph
+let processedStream  = null;   // output of the gain graph, fed to MediaRecorder
 let audioTail        = null;   // tail of previous chunk, prefixed to next chunk for continuity
 
 const CHUNK_MS       = 2000;   // record a chunk every CHUNK_MS seconds
@@ -138,8 +142,10 @@ function handleTranscript(text) {
 // ─────────────────────────────────────────────
 //  WHISPER WORKER
 // ─────────────────────────────────────────────
-async function initWorker(language = 'english') {
+async function initWorker(language = 'english', deviceId = null, gain = 1.0) {
 	currentLanguage = language;
+	currentDeviceId = deviceId;
+	currentGain     = gain;
 	worker = new Worker('/whisper-worker.js', { type: 'module' });
 
 	worker.onmessage = async ({ data }) => {
@@ -167,8 +173,20 @@ async function initWorker(language = 'english') {
 // ─────────────────────────────────────────────
 async function startMic() {
 	try {
-		mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+		const audioConstraints = currentDeviceId
+			? { deviceId: { exact: currentDeviceId } }
+			: true;
+		mediaStream  = await navigator.mediaDevices.getUserMedia({ audio: audioConstraints, video: false });
 		audioContext = new AudioContext({ sampleRate: 16000 });
+
+		const source = audioContext.createMediaStreamSource(mediaStream);
+		gainNode     = audioContext.createGain();
+		gainNode.gain.value = currentGain;
+		const dest   = audioContext.createMediaStreamDestination();
+		source.connect(gainNode);
+		gainNode.connect(dest);
+		processedStream = dest.stream;
+
 		beginRecording();
 		setMicUI(true);
 	} catch (err) {
@@ -178,7 +196,7 @@ async function startMic() {
 
 function beginRecording() {
 	audioChunks  = [];
-	mediaRecorder = new MediaRecorder(mediaStream);
+	mediaRecorder = new MediaRecorder(processedStream || mediaStream);
 
 	mediaRecorder.ondataavailable = (e) => {
 		if (e.data.size > 0) audioChunks.push(e.data);
@@ -268,6 +286,8 @@ function exitPrompter() {
 	audioChunks     = [];
 	processingAudio = false;
 	audioTail       = null;
+	gainNode        = null;
+	processedStream = null;
 	document.getElementById('prompter').style.display = 'none';
 	document.getElementById('setup').style.display    = 'flex';
 	currentIdx = 0;
@@ -282,6 +302,11 @@ function resumeMic() {
 
 function toggleAutoScroll(enabled) {
 	autoScrollEnabled = enabled;
+}
+
+function setGain(value) {
+	currentGain = value;
+	if (gainNode) gainNode.gain.value = value;
 }
 
 function togglePanelVisibility() {
@@ -311,6 +336,7 @@ export {
 	toggleMic,
 	toggleAutoScroll,
 	togglePanelVisibility,
+	setGain,
 	resetPrompter  as  reset,
 	exitPrompter   as  exit,
 };
