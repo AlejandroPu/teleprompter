@@ -9,7 +9,7 @@ A voice-driven teleprompter that highlights text in real time using on-device sp
 - Real-time speech-to-text with Whisper (runs entirely in the browser)
 - Auto-scroll synchronized to your voice
 - Adjustable font size, text width, line height and scroll speed
-- Multilingual support — English, Spanish and more
+- English-only transcription (uses `Xenova/whisper-tiny.en`)
 - Works offline after the first model download
 
 ## Tech Stack

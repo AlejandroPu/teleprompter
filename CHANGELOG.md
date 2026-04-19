@@ -5,6 +5,14 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.0.1] - 2026-04-19
+
+### Fixed
+- README incorrectly listed multilingual support; corrected to reflect that
+  the app uses `Xenova/whisper-tiny.en` (English only)
+
+---
+
 ## [2.0.0] - 2026-03-18
 
 ### Changed
