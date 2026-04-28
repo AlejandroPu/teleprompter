@@ -8,10 +8,10 @@ A voice-driven teleprompter that highlights text in real time using on-device sp
 
 - Real-time speech-to-text with Whisper (runs entirely in the browser)
 - Auto-scroll synchronized to your voice
-- Adjustable font size, text width, line height and scroll speed
+- Adjustable font size, text width, microphone selection and mic gain
 - Multilingual transcription — English, Spanish, French, German, Italian, Portuguese, Dutch, Russian, Chinese, Japanese, Korean, Arabic (uses `Xenova/whisper-base`)
 - Language selector in the setup screen
-- Works offline after the first model download
+- Reusable offline after the runtime assets and model have been cached in the same browser profile
 
 ## Tech Stack
 
@@ -23,17 +23,20 @@ A voice-driven teleprompter that highlights text in real time using on-device sp
 
 ```bash
 npm install
-node server.js
+npm start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-> On first launch the Whisper model (~150MB) will be downloaded and cached automatically.
+> On first launch the runtime assets and Whisper model (~150MB) are downloaded and cached automatically.
 
 ## Project Structure
 
 ```
 teleprompter/
+├── agents_mem/
+│   ├── CODEX.md          # Codex analysis and working plan
+│   └── README.md         # Purpose of the agents memory folder
 ├── public/
 │   ├── index.html
 │   ├── whisper-worker.js
@@ -50,7 +53,8 @@ teleprompter/
 ├── package-lock.json
 ├── .gitignore
 ├── README.md
-└── LICENCE
+├── CLAUDE.md
+└── LICENSE
 ```
 
 ## Built With

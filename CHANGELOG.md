@@ -5,6 +5,22 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [Unreleased]
+
+### Changed
+- Aligned `package.json` metadata with the current project state:
+  version, entrypoint, scripts, author, license, and description
+- Clarified README setup instructions and feature list so they match the
+  current implementation more closely
+
+### Fixed
+- `resetPrompter` now resets the reading session without clearing the
+  prepared word map, so restart semantics match the control label
+- Exiting the prompter now restores panel visibility, transcript text, and
+  auto-scroll defaults for the next session
+
+---
+
 ## [2.2.0] - 2026-04-19
 
 ### Added
