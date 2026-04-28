@@ -272,8 +272,13 @@ function setMicUI(active) {
 // ─────────────────────────────────────────────
 function resetPrompter() {
 	currentIdx = 0;
+	autoScrollEnabled = true;
+	if (scrollRafId) {
+		cancelAnimationFrame(scrollRafId);
+		scrollRafId = null;
+	}
 	updateHighlight(0);
-	words = [];
+	document.getElementById('transcript').textContent = '';
 	document.getElementById('scrollContainer').scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -288,8 +293,17 @@ function exitPrompter() {
 	audioTail       = null;
 	gainNode        = null;
 	processedStream = null;
+	autoScrollEnabled = true;
+	panelVisible = true;
+	if (scrollRafId) {
+		cancelAnimationFrame(scrollRafId);
+		scrollRafId = null;
+	}
 	document.getElementById('prompter').style.display = 'none';
 	document.getElementById('setup').style.display    = 'flex';
+	document.getElementById('panel').classList.remove('hidden');
+	document.getElementById('hideHint').textContent = 'Hide panel [H]';
+	document.getElementById('transcript').textContent = '';
 	currentIdx = 0;
 	words = [];
 }
