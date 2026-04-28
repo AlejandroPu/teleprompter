@@ -37,6 +37,13 @@ gainSlider.addEventListener('input', () => {
 // ─────────────────────────────────────────────
 const micSelect      = document.getElementById('micSelect');
 const micUnlockBtn   = document.getElementById('micUnlockBtn');
+const setupNotice    = document.getElementById('setupNotice');
+
+function setSetupNotice(message, tone = '') {
+	setupNotice.textContent = message;
+	setupNotice.className = 'app-notice';
+	if (tone) setupNotice.classList.add(`is-${tone}`);
+}
 
 async function populateMics() {
 	if (!navigator.mediaDevices?.enumerateDevices) return;
@@ -72,8 +79,9 @@ micUnlockBtn.addEventListener('click', async () => {
 		s.getTracks().forEach(t => t.stop());
 		await populateMics();
 		startMicMonitor();
+		setSetupNotice('Microphone access granted.');
 	} catch (err) {
-		alert('Microphone access denied: ' + err.message);
+		setSetupNotice(`Microphone access denied: ${err.message}`, 'error');
 	}
 });
 
@@ -141,7 +149,7 @@ function stopMicMonitor() {
 // try to start monitor silently if permission is already granted
 if (navigator.permissions?.query) {
 	navigator.permissions.query({ name: 'microphone' }).then(status => {
-		if (status.state === 'granted') startMicMonitor();
+	if (status.state === 'granted') startMicMonitor();
 	}).catch(() => {});
 }
 
@@ -165,7 +173,10 @@ const LANG_TO_BCP47 = {
 
 document.getElementById('startBtn').addEventListener('click', async () => {
 	const raw = document.getElementById('textInput').value.trim();
-	if (!raw) return;
+	if (!raw) {
+		setSetupNotice('Paste or type some text before starting.', 'warning');
+		return;
+	}
 
 	document.documentElement.style.setProperty('--font-size', fontSizeSlider.value + 'px');
 	document.documentElement.style.setProperty('--text-width', widthSlider.value + '%');
@@ -184,6 +195,7 @@ document.getElementById('startBtn').addEventListener('click', async () => {
 	const gain     = gainSlider.value / 100;
 	document.documentElement.lang = LANG_TO_BCP47[language] || 'en';
 	stopMicMonitor();
+	setSetupNotice('');
 	await initWorker(language, deviceId, gain);
 });
 
