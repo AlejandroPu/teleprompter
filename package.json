@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "echo \"No automated tests configured yet.\""
+    "test": "node scripts/ci-smoke.js"
   },
   "keywords": [],
   "author": "Alejandro Retamal",
