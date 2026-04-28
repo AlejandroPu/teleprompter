@@ -34,9 +34,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ```
 teleprompter/
-├── agents_mem/
-│   ├── CODEX.md          # Codex analysis and working plan
-│   └── README.md         # Purpose of the agents memory folder
+├── AGENTS.md
+├── CLAUDE.md
 ├── public/
 │   ├── index.html
 │   ├── whisper-worker.js
@@ -53,7 +52,6 @@ teleprompter/
 ├── package-lock.json
 ├── .gitignore
 ├── README.md
-├── CLAUDE.md
 └── LICENSE
 ```
 
