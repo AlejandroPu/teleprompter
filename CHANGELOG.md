@@ -25,6 +25,12 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Microphone and decoding failures now surface as in-app notices instead of
   browser alerts
 
+### Internal
+- Added a minimal GitHub Actions workflow that installs dependencies and runs
+  a portable smoke test on pushes and pull requests targeting `main`
+- Replaced the placeholder `npm test` script with a small structural smoke
+  check for the current app shell and entrypoints
+
 ---
 
 ## [2.2.0] - 2026-04-19
