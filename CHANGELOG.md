@@ -30,6 +30,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   a portable smoke test on pushes and pull requests targeting `main`
 - Replaced the placeholder `npm test` script with a small structural smoke
   check for the current app shell and entrypoints
+- Adopted `AGENTS.md` at the repository root as the main agent-facing
+  operations file and removed the older `agents_mem/` folder
 
 ---
 
