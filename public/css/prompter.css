@@ -31,6 +31,18 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
+.app-notice {
+	min-height: 1.2em;
+	font-size: 0.72rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #8a7b60;
+	text-align: center;
+}
+
+.app-notice.is-warning { color: var(--accent); }
+.app-notice.is-error   { color: #f08a8a; }
+
 
 
 /* === PROMPTER === */
@@ -201,4 +213,13 @@ input[type="range"].panel-range { width: 80px; height: 2px; }
 	z-index: 10;
 	max-width: 400px;
 	line-height: 1.4;
+}
+
+.session-notice {
+	position: fixed;
+	top: 44px;
+	left: 20px;
+	max-width: 420px;
+	text-align: left;
+	z-index: 10;
 }
