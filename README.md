@@ -58,4 +58,5 @@ teleprompter/
 ## Built With
 
 - Versions up to **2.0.0** — developed in pair programming with [Claude Sonnet 4.6](https://claude.ai) (Anthropic) via the Claude web app.
-- From version **2.1.0** onward — developed with [Claude Code](https://claude.com/claude-code) (Anthropic).
+- Versions **2.1.0** through **2.2.0** — developed with [Claude Code](https://claude.com/claude-code) (Anthropic).
+- From version **2.3.0** onward — developed with Codex (OpenAI).
