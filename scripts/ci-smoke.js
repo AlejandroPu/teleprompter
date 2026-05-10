@@ -20,6 +20,7 @@ function main() {
 	const serverJs = read('server.js');
 	const indexHtml = read(path.join('public', 'index.html'));
 	const mainJs = read(path.join('public', 'js', 'main.js'));
+	const matchingJs = read(path.join('public', 'js', 'matching.mjs'));
 	const prompterJs = read(path.join('public', 'js', 'prompter.js'));
 	const workerJs = read(path.join('public', 'whisper-worker.js'));
 
@@ -34,9 +35,11 @@ function main() {
 	assert(mainJs.includes("from './prompter.js'"), 'main.js must import the prompter module');
 	assert(mainJs.includes('setSetupNotice'), 'main.js must expose setup notice handling');
 
-	assert(prompterJs.includes('function findBestMatch'), 'prompter.js must define findBestMatch');
-	assert(prompterJs.includes('function wordSimilarity'), 'prompter.js must define fuzzy word similarity');
-	assert(prompterJs.includes('function scoreScriptWindow'), 'prompter.js must define script-window scoring');
+	assert(prompterJs.includes("from './matching.mjs'"), 'prompter.js must import the matching module');
+	assert(prompterJs.includes('findBestMatch(scriptWords, currentIdx, spokenWords)'), 'prompter.js must use the shared matching module');
+	assert(matchingJs.includes('function findBestMatch'), 'matching.mjs must define findBestMatch');
+	assert(matchingJs.includes('function wordSimilarity'), 'matching.mjs must define fuzzy word similarity');
+	assert(matchingJs.includes('function scoreScriptWindow'), 'matching.mjs must define script-window scoring');
 	assert(prompterJs.includes('function submitPayload'), 'prompter.js must define submitPayload');
 	assert(prompterJs.includes('function setSessionNotice'), 'prompter.js must define session notice handling');
 

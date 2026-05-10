@@ -7,6 +7,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [2.3.0] - 2026-05-10
+
 ### Changed
 - Aligned `package.json` metadata with the current project state:
   version, entrypoint, scripts, author, license, and description
@@ -19,6 +23,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Voice tracking now uses fuzzy alignment against the expected script window,
   making it more tolerant of minor Whisper transcription errors and omitted
   words
+- Matching helpers now live in a dedicated browser module so they can be
+  tested independently of the UI runtime
 
 ### Fixed
 - `resetPrompter` now resets the reading session without clearing the
@@ -33,6 +39,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   a portable smoke test on pushes and pull requests targeting `main`
 - Replaced the placeholder `npm test` script with a small structural smoke
   check for the current app shell and entrypoints
+- Added focused unit tests for `cleanWord`, `wordSimilarity`,
+  `scoreScriptWindow`, and `findBestMatch`
 - Adopted `AGENTS.md` at the repository root as the main agent-facing
   operations file and removed the older `agents_mem/` folder
 - Documented the voice-improvement roadmap by task difficulty, including which
