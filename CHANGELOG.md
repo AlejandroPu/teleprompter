@@ -16,6 +16,9 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   false jumps on weak transcript fragments
 - Audio chunk handling now keeps the latest pending chunk explicitly while
   the worker is still busy instead of dropping it silently
+- Voice tracking now uses fuzzy alignment against the expected script window,
+  making it more tolerant of minor Whisper transcription errors and omitted
+  words
 
 ### Fixed
 - `resetPrompter` now resets the reading session without clearing the
