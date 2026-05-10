@@ -35,6 +35,8 @@ function main() {
 	assert(mainJs.includes('setSetupNotice'), 'main.js must expose setup notice handling');
 
 	assert(prompterJs.includes('function findBestMatch'), 'prompter.js must define findBestMatch');
+	assert(prompterJs.includes('function wordSimilarity'), 'prompter.js must define fuzzy word similarity');
+	assert(prompterJs.includes('function scoreScriptWindow'), 'prompter.js must define script-window scoring');
 	assert(prompterJs.includes('function submitPayload'), 'prompter.js must define submitPayload');
 	assert(prompterJs.includes('function setSessionNotice'), 'prompter.js must define session notice handling');
 

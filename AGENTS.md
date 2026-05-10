@@ -36,7 +36,14 @@ Teleprompter is a small voice-driven web app:
 ## Current Priorities
 
 - CI is now in place with a minimal smoke check.
-- The next major technical phase is deeper automated testing:
+- Voice tracking needs to improve beyond raw transcript matching:
+  - align speech against the expected script instead of treating ASR output as the source of truth
+  - use fuzzy word matching for minor transcription errors, omitted words, and short insertions
+  - consider Whisper timestamps once the text tracker is more stable
+  - add optional heavier Whisper models such as `small` for better accuracy on capable devices
+  - add simple audio preprocessing: normalization, clipping feedback, noise gate, and VAD
+  - revisit chunk size and overlap after measuring latency versus accuracy
+- The next major testing phase is deeper automated coverage:
   - `cleanWord()`
   - `findBestMatch()`
   - session reset and transition flows
