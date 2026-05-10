@@ -36,18 +36,62 @@ Teleprompter is a small voice-driven web app:
 ## Current Priorities
 
 - CI is now in place with a minimal smoke check.
-- Voice tracking needs to improve beyond raw transcript matching:
-  - align speech against the expected script instead of treating ASR output as the source of truth
-  - use fuzzy word matching for minor transcription errors, omitted words, and short insertions
-  - consider Whisper timestamps once the text tracker is more stable
-  - add optional heavier Whisper models such as `small` for better accuracy on capable devices
-  - add simple audio preprocessing: normalization, clipping feedback, noise gate, and VAD
-  - revisit chunk size and overlap after measuring latency versus accuracy
-- The next major testing phase is deeper automated coverage:
-  - `cleanWord()`
-  - `findBestMatch()`
-  - session reset and transition flows
 - Offline support still depends on cached remote runtime assets.
+
+## Voice Improvement Plan
+
+The current voice tracker already uses fuzzy script-window matching. Future
+work should improve reliability in small, testable steps.
+
+### Good Tasks For GPT-5.4
+
+- Add focused unit tests for `cleanWord()`, `wordSimilarity()`,
+  `scoreScriptWindow()`, and `findBestMatch()`.
+- Add clipping feedback when microphone gain saturates the input.
+- Add a simple RMS-based noise gate so silent chunks are not sent to Whisper.
+- Add light per-chunk normalization before transcription.
+- Make `CHUNK_MS` and `OVERLAP_MS` easier to tune from named constants or setup
+  controls.
+- Add a model selector for `base` and `small`, keeping `base` as the default.
+- Persist user preferences in `localStorage`: language, mic, gain, font size,
+  text width, and selected model.
+- Improve README/manual test notes for voice tracking behavior.
+
+### Medium Tasks For GPT-5.4 If The Scope Is Kept Small
+
+- Move matching helpers from `public/js/prompter.js` into a dedicated
+  `public/js/matching.js` module.
+- Add manual debug output behind a flag for transcript text, chosen match,
+  score, and confidence.
+- Tune fuzzy matching thresholds only when there are concrete manual examples
+  showing false positives or missed matches.
+
+### Ask The User To Switch Back To GPT-5.5 Before These
+
+- Redesign the tracker around accumulated position confidence instead of a
+  single match per transcript chunk.
+- Combine Whisper timestamps with script position tracking.
+- Replace `MediaRecorder` chunking with a continuous audio buffer.
+- Add a real VAD with pre-roll/post-roll buffering instead of a simple noise
+  gate.
+- Integrate Whisper contextual prompting or timestamp options after verifying
+  what Transformers.js supports in-browser.
+- Make broad architecture changes touching worker lifecycle, audio capture,
+  matching, scrolling, and UI state together.
+
+### Recommended Order
+
+1. Add tests around the current fuzzy matcher.
+2. Add clipping feedback and a simple noise gate.
+3. Add light normalization.
+4. Add the `base`/`small` model selector.
+5. Stop and ask the user to return to GPT-5.5 for the confidence-based tracker.
+
+### Handoff Rule
+
+If a task requires changing how position confidence is represented, how audio
+is buffered over time, or how Whisper timestamps are interpreted, stop after
+writing a short implementation note and ask the user to continue with GPT-5.5.
 
 ## Notes
 

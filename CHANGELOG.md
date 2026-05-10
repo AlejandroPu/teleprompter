@@ -35,6 +35,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   check for the current app shell and entrypoints
 - Adopted `AGENTS.md` at the repository root as the main agent-facing
   operations file and removed the older `agents_mem/` folder
+- Documented the voice-improvement roadmap by task difficulty, including which
+  items are suitable for GPT-5.4 and which should wait for GPT-5.5
 
 ---
 
